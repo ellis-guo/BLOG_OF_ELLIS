@@ -18,10 +18,6 @@ export default function Navbar({ locale }: { locale: string }) {
           <Link href={`/${locale}/projects`}>Projects</Link>
           <Link href={`/${locale}/blog`}>Blog</Link>
 
-          {user?.username === "admin" && (
-            <Link href={`/${locale}/admin`}>Admin</Link>
-          )}
-
           {isSignedIn ? <UserButton /> : <Link href="/sign-in">Sign In</Link>}
         </div>
       </div>
