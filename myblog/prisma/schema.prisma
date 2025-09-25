@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id        String   @id @default(cuid())
+  bioZh     String?  @db.Text
+  bioEn     String?  @db.Text
+  bioFr     String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id         String   @id @default(cuid())
+  type       String   @default("article")
+  slug       String   @unique
+  titleZh    String
+  titleEn    String
+  titleFr    String
+  contentZh  String   @db.Text
+  contentEn  String   @db.Text
+  contentFr  String   @db.Text
+  visibility String   @default("public")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
