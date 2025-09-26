@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "about": "About",
+    "projects": "Projects",
+    "blog": "Blog",
+    "signIn": "Sign In",
+    "language": "Language"
+  },
+  "languages": {
+    "zh": "中文",
+    "en": "English",
+    "fr": "Français"
+  },
+  "home": {
+    "welcome": "Welcome to My Blog",
+    "description": "This is Ellis Guo's personal website"
+  }
+}

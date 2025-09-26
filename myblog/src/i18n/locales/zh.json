@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "about": "关于",
+    "projects": "项目",
+    "blog": "博客",
+    "signIn": "登录",
+    "language": "语言"
+  },
+  "languages": {
+    "zh": "中文",
+    "en": "English",
+    "fr": "Français"
+  },
+  "home": {
+    "welcome": "欢迎来到我的博客",
+    "description": "这是 Ellis Guo 的个人网站"
+  }
+}
