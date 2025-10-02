@@ -4,51 +4,51 @@ import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
 export default function LanguageSwitcher({ currentLocale, translations }: any) {
-  console.log("LanguageSwitcher rendered!", currentLocale, translations);
-
-  // Control dropdown menu state, closed by default
+  // Control dropdown open/close state
   const [isOpen, setIsOpen] = useState(false);
 
-  // It's Next.js router to change pages
+  // Next.js router to change pages
   const router = useRouter();
 
-  // Get current page path ("/en/blog")
+  // Get current page path (e.g., "/en/blog")
   const pathname = usePathname();
 
   const changeLanguage = (newLocale: string) => {
-    // "/en/blog" → "/zh/blog"
+    // Replace current language in URL with new language
+    // Example: "/en/blog" becomes "/zh/blog"
     const newPath = pathname.replace(`/${currentLocale}`, `/${newLocale}`);
     router.push(newPath);
-    setIsOpen(false);
+    setIsOpen(false); // Close dropdown after selection
   };
 
   return (
     <div className="relative">
-      {/* Language button */}
+      {/* Language button - shows "Language" / "语言" / "Langue" */}
       <button onClick={() => setIsOpen(!isOpen)}>
         {translations.nav.language}
       </button>
 
       {/* Dropdown menu - only shows when isOpen is true */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 bg-white border rounded shadow">
+        <div className="absolute right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg min-w-[120px]">
+          {/* Chinese option - always shows "中文" */}
           <button
             onClick={() => changeLanguage("zh")}
-            className="block px-4 py-2 hover:bg-gray-100"
+            className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             {translations.languages.zh}
           </button>
           {/* English option - always shows "English" */}
           <button
             onClick={() => changeLanguage("en")}
-            className="block px-4 py-2 hover:bg-gray-100"
+            className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             {translations.languages.en}
           </button>
           {/* French option - always shows "Français" */}
           <button
             onClick={() => changeLanguage("fr")}
-            className="block px-4 py-2 hover:bg-gray-100"
+            className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             {translations.languages.fr}
           </button>
