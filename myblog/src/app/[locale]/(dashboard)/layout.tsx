@@ -9,16 +9,13 @@ export default async function DashboardLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  // Get locale from params
   const { locale } = await params;
-
-  // Load translations for current locale
   const translations = await getTranslations(locale as Locale);
 
   return (
     <div className="min-h-screen">
       <Navbar locale={locale} translations={translations} />
-      <main className="max-w-6xl mx-auto px-4 py-12">{children}</main>
+      <main className="max-w-[1024px] mx-auto px-5 py-12">{children}</main>
     </div>
   );
 }

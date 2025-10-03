@@ -24,7 +24,10 @@ export default function LanguageSwitcher({ currentLocale, translations }: any) {
   return (
     <div className="relative">
       {/* Language button - shows "Language" / "语言" / "Langue" */}
-      <button onClick={() => setIsOpen(!isOpen)}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+      >
         {translations.nav.language}
       </button>
 

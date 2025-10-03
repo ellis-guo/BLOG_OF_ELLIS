@@ -8,8 +8,6 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,6 +19,56 @@
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: #555;
+  font-family: "Rubik", "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-weight: 700;
+  color: #000;
+}
+
+h1 {
+  font-size: 36px;
+  line-height: 1;
+}
+
+h2 {
+  font-size: 28px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4,
+h5,
+h6 {
+  font-size: 18px;
+}
+
+.logo {
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  color: #f35029;
+  text-decoration: underline;
 }
