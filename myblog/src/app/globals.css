@@ -62,13 +62,24 @@ h6 {
   font-weight: 600;
 }
 
-a {
+a,
+button,
+.dropdown-item {
   color: #000;
   text-decoration: none;
   transition: all 0.2s ease;
 }
 
-a:hover {
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+a:hover,
+button:hover,
+.dropdown-item:hover {
   color: #f35029;
   text-decoration: underline;
 }
