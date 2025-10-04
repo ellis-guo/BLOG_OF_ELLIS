@@ -16,8 +16,8 @@ export default function Navbar({ locale, translations }: NavbarProps) {
   return (
     <div className="max-w-[1024px] min-w-[300px] mx-auto px-0 pt-5">
       <header className="border-t-[3px] border-t-black border-b border-b-[#ccc] min-h-[78px] mb-2.5">
-        <div className="flex flex-wrap justify-center md:justify-between items-center min-h-[78px] px-5 gap-4">
-          <h1 className="logo m-0 whitespace-nowrap w-full md:w-auto text-center md:text-left">
+        <div className="flex flex-wrap justify-center md:justify-between items-center min-h-[78px] px-5 gap-0">
+          <h1 className="logo m-0 whitespace-nowrap w-full md:w-auto text-center md:text-left pt-2">
             <Link href={`/${locale}`}>{siteConfig.name}</Link>
           </h1>
 
