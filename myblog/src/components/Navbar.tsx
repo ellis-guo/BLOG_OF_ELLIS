@@ -46,7 +46,9 @@ export default function Navbar({ locale, translations }: NavbarProps) {
                 {isSignedIn ? (
                   <UserButton />
                 ) : (
-                  <Link href="/sign-in">{translations.nav.signIn}</Link>
+                  <Link href={`/${locale}/sign-in`}>
+                    {translations.nav.signIn}
+                  </Link>
                 )}
               </li>
             </ul>
