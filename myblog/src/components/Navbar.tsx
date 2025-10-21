@@ -4,6 +4,7 @@ import Link from "next/link";
 import { UserButton, useUser } from "@clerk/nextjs";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { siteConfig } from "@/config/site";
+import AnimatedSignatureLogo from "./AnimatedSignatureLogo";
 
 interface NavbarProps {
   locale: string;
@@ -18,7 +19,10 @@ export default function Navbar({ locale, translations }: NavbarProps) {
       <header className="border-t-[3px] border-t-black border-b border-b-[#ccc] min-h-[78px] mb-2.5">
         <div className="flex flex-wrap justify-center md:justify-between items-center min-h-[78px] px-5 gap-0">
           <h1 className="logo m-0 whitespace-nowrap w-full md:w-auto text-center md:text-left pt-2">
-            <Link href={`/${locale}`}>{siteConfig.name}</Link>
+            {/* <Link href={`/${locale}`}>{siteConfig.name}</Link> */}
+            <Link href={`/${locale}`}>
+              <AnimatedSignatureLogo />
+            </Link>
           </h1>
 
           <nav className="w-full md:w-auto">
