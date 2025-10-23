@@ -2,7 +2,7 @@
   "nav": {
     "about": "À propos",
     "projects": "Projets",
-    "blog": "Blog",
+    "blog": "Billet",
     "signIn": "Se connecter",
     "language": "Langue"
   },
@@ -14,5 +14,14 @@
   "home": {
     "welcome": "Bienvenue sur mon blog",
     "description": "Ceci est le site personnel d'Ellis Guo"
+  },
+  "about": {
+    "bio": "Bio",
+    "contact": "Contact",
+    "editProfile": "Modifier le profil",
+    "noBio": "Aucune bio ajoutée...",
+    "noContact": "Aucune information de contact...",
+    "clickToAdd": "Cliquez sur le bouton modifier ci-dessous",
+    "lifeMoments": "Moments de vie"
   }
 }

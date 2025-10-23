@@ -2,7 +2,7 @@
   "nav": {
     "about": "About",
     "projects": "Projects",
-    "blog": "Blog",
+    "blog": "Post",
     "signIn": "Sign In",
     "language": "Language"
   },
@@ -14,5 +14,14 @@
   "home": {
     "welcome": "Welcome to My Blog",
     "description": "This is Ellis Guo's personal website"
+  },
+  "about": {
+    "bio": "Bio",
+    "contact": "Contact",
+    "editProfile": "Edit Profile",
+    "noBio": "No bio added yet...",
+    "noContact": "No contact information yet...",
+    "clickToAdd": "Click edit button below to add",
+    "lifeMoments": "Life Moments"
   }
 }

@@ -19,24 +19,27 @@ export default function Navbar({ locale, translations }: NavbarProps) {
       <header className="border-t-[3px] border-t-black border-b border-b-[#ccc] min-h-[78px] mb-2.5">
         <div className="flex flex-wrap justify-center md:justify-between items-center min-h-[78px] px-5 gap-0">
           <h1 className="logo m-0 whitespace-nowrap w-full md:w-auto text-center md:text-left pt-2">
-            {/* <Link href={`/${locale}`}>{siteConfig.name}</Link> */}
             <Link href={`/${locale}`}>
               <AnimatedSignatureLogo />
             </Link>
           </h1>
 
           <nav className="w-full md:w-auto">
-            <ul className="flex flex-wrap justify-center list-none m-0 p-0 gap-6 items-center font-semibold">
+            <ul className="flex flex-wrap justify-center list-none m-0 p-0 gap-6 items-center text-base font-semibold">
               <li>
-                <Link href={`/${locale}/about`}>{translations.nav.about}</Link>
+                <Link href={`/${locale}/about`} className="text-lg">
+                  {translations.nav.about}
+                </Link>
               </li>
               <li>
-                <Link href={`/${locale}/projects`}>
+                <Link href={`/${locale}/projects`} className="text-lg">
                   {translations.nav.projects}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/blog`}>{translations.nav.blog}</Link>
+                <Link href={`/${locale}/blog`} className="text-lg">
+                  {translations.nav.blog}
+                </Link>
               </li>
 
               <li>
@@ -50,7 +53,7 @@ export default function Navbar({ locale, translations }: NavbarProps) {
                 {isSignedIn ? (
                   <UserButton />
                 ) : (
-                  <Link href={`/${locale}/sign-in`}>
+                  <Link href={`/${locale}/sign-in`} className="text-lg">
                     {translations.nav.signIn}
                   </Link>
                 )}

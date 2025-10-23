@@ -9,9 +9,34 @@ datasource db {
 
 model Profile {
   id        String   @id @default(cuid())
+  
+  // Personal Bio (three languages)
   bioZh     String?  @db.Text
   bioEn     String?  @db.Text
   bioFr     String?  @db.Text
+  
+  // Contact info
+  email     String?
+  github    String?
+  linkedin  String?
+  twitter   String?
+  wechat    String?
+  
+  // Main profile photo
+  photoUrl  String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LifeMoment {
+  id        String   @id @default(cuid())
+  imageUrl  String   // Photo URL from Cloudinary
+  caption   String?  // Short caption for the photo
+  intro     String?  @db.Text  // Longer introduction/story
+  order     Int      @default(0)  // Display order
+  time      DateTime @default(now())  // When this moment happened
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

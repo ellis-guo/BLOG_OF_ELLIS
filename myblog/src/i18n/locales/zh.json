@@ -2,7 +2,7 @@
   "nav": {
     "about": "关于",
     "projects": "项目",
-    "blog": "博客",
+    "blog": "随笔",
     "signIn": "登录",
     "language": "语言"
   },
@@ -14,5 +14,14 @@
   "home": {
     "welcome": "欢迎来到我的博客",
     "description": "这是 Ellis Guo 的个人网站"
+  },
+  "about": {
+    "bio": "个人简介",
+    "contact": "联系方式",
+    "editProfile": "编辑资料",
+    "noBio": "还没有添加个人简介...",
+    "noContact": "还没有添加联系方式...",
+    "clickToAdd": "点击下方编辑按钮添加",
+    "lifeMoments": "生活"
   }
 }
