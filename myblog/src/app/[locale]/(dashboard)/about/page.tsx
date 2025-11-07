@@ -4,6 +4,8 @@ import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { CometCard } from "@/components/ui/comet-card";
+import LifeMomentsSlider from "@/components/LifeMomentsSlider";
+import Footer from "@/components/Footer";
 
 export default async function AboutPage({
   params,
@@ -76,6 +78,12 @@ export default async function AboutPage({
     },
     { icon: "💬", label: "WeChat", value: profile?.wechat, link: null },
   ].filter((item) => item.value);
+
+  const lifeMoments = await prisma.lifeMoment.findMany({
+    orderBy: {
+      order: "asc",
+    },
+  });
 
   return (
     <div className="max-w-[1024px] mx-auto">
@@ -176,7 +184,7 @@ export default async function AboutPage({
             <div className="pt-6">
               <Link
                 href={`/${locale}/admin/profile/edit`}
-                className="inline-block px-6 py-3 border-2 border-black bg-white hover:bg-[#F35029] hover:text-white hover:border-[#F35029] transition-all font-semibold"
+                className="inline-block px-6 py-3 border-2 border-black bg-white hover:bg-[#F35029] hover:!text-white hover:border-[#F35029] transition-all font-semibold"
               >
                 {translations.about.editProfile}
               </Link>
@@ -185,17 +193,16 @@ export default async function AboutPage({
         </div>
       </div>
 
-      {/* Life Moments placeholder area */}
+      {/* Life Moments area */}
       <div className="py-8 border-t border-[#ccc]">
         <h2 className="text-2xl mb-6 font-bold">
           {translations.about.lifeMoments}
         </h2>
-        <div className="bg-gray-50 border-2 border-dashed border-gray-300 h-48 flex items-center justify-center">
-          <span className="text-gray-400">
-            [ Horizontal Sliding Cards - To be implemented ]
-          </span>
-        </div>
+        <LifeMomentsSlider moments={lifeMoments} />
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

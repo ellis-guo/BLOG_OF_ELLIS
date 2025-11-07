@@ -15,6 +15,18 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Long+Cang&family=Rock+Salt&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <html lang="en">
         <body>{children}</body>
       </html>

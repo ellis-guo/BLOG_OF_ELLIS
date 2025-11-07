@@ -18,13 +18,33 @@ export default function AnimatedSignatureLogo() {
           clipPath: isVisible ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
         }}
       >
-        <img
+        {/* <img
           src="/signatures/signature_2.svg"
           alt="郭世越 Ellis Guo"
           width={250}
           height={62}
           className="block"
-        />
+        /> */}
+
+        <div
+          className="transition-all duration-[1500ms] ease-out flex items-baseline gap-3"
+          style={{
+            clipPath: isVisible ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
+          }}
+        >
+          <span
+            className="text-[32px] leading-none"
+            style={{ fontFamily: "'Long Cang', cursive" }}
+          >
+            郭世越
+          </span>
+          <span
+            className="text-[24px]"
+            style={{ fontFamily: "'Rock Salt', cursive", lineHeight: "1.6" }}
+          >
+            Ellis Guo
+          </span>
+        </div>
       </div>
     </div>
   );
