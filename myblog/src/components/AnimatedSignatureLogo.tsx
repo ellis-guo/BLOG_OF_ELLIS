@@ -41,6 +41,7 @@ export default function AnimatedSignatureLogo() {
           <span
             className="text-[24px]"
             style={{ fontFamily: "'Rock Salt', cursive", lineHeight: "1.6" }}
+            suppressHydrationWarning
           >
             Ellis Guo
           </span>
