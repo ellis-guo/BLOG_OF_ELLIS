@@ -152,6 +152,7 @@ export default async function AboutPage({
                 {contactInfo.map((item, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <span>{item.icon}</span>
+                    <span className="font-semibold">{item.label}:</span>
                     {item.link ? (
                       <a
                         href={item.link}
@@ -198,7 +199,11 @@ export default async function AboutPage({
         <h2 className="text-2xl mb-6 font-bold">
           {translations.about.lifeMoments}
         </h2>
-        <LifeMomentsSlider moments={lifeMoments} />
+        <LifeMomentsSlider
+          moments={lifeMoments}
+          isAdmin={isAdmin}
+          locale={locale}
+        />
       </div>
 
       {/* Footer */}

@@ -6,6 +6,11 @@ import { locales, defaultLocale, isValidLocale } from "@/i18n/i18n";
 export default clerkMiddleware((auth, req: NextRequest) => {
   const pathname = req.nextUrl.pathname;
 
+  // Skip locale handling for API routes
+  if (pathname.startsWith("/api/")) {
+    return NextResponse.next();
+  }
+
   // Check if pathname is missing locale
   const pathnameIsMissingLocale = locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`

@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
+import Link from "next/link";
 
 interface LifeMoment {
   id: string;
@@ -12,9 +13,15 @@ interface LifeMoment {
 
 interface LifeMomentsSliderProps {
   moments: LifeMoment[];
+  isAdmin?: boolean;
+  locale?: string;
 }
 
-export default function LifeMomentsSlider({ moments }: LifeMomentsSliderProps) {
+export default function LifeMomentsSlider({
+  moments,
+  isAdmin = false,
+  locale = "en",
+}: LifeMomentsSliderProps) {
   const testimonials = moments.map((moment) => ({
     quote: moment.intro || moment.caption || "A beautiful moment in life",
     name: moment.caption || "Life Moment",
@@ -34,5 +41,24 @@ export default function LifeMomentsSlider({ moments }: LifeMomentsSliderProps) {
     );
   }
 
-  return <AnimatedTestimonials testimonials={testimonials} autoplay={false} />;
+  return (
+    <div className="relative">
+      <AnimatedTestimonials testimonials={testimonials} autoplay={false} />
+
+      {/* Admin Manage Button - positioned below, to the right of arrows */}
+      {isAdmin && (
+        <div className="flex justify-center mt-4">
+          <div className="flex items-center gap-4">
+            <div className="w-50"></div>
+            <Link
+              href={`/${locale}/admin/moments/edit`}
+              className="inline-block px-6 py-3 border-2 border-black bg-white hover:bg-[#F35029] hover:!text-white hover:border-[#F35029] transition-all font-semibold"
+            >
+              Manage Moments
+            </Link>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
