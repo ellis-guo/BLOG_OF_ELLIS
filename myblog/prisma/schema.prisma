@@ -50,11 +50,15 @@ model Article {
   titleEn    String
   titleFr    String
   
+  descriptionZh  String?  @db.Text
+  descriptionEn  String?  @db.Text
+  descriptionFr  String?  @db.Text
+  
   contentZh  String   @db.Text
   contentEn  String   @db.Text
   contentFr  String   @db.Text
   
-  author     String   @default("郭世越 Ellis Guo")
+  author     String   @default("Ellis Guo (郭世越)")
   coverImage String?
   
   visibility String   @default("public")
