@@ -41,16 +41,22 @@ model LifeMoment {
   updatedAt DateTime @updatedAt
 }
 
-model Post {
+model Article {
   id         String   @id @default(cuid())
-  type       String   @default("article")
+  type       String   @default("post")
   slug       String   @unique
+  
   titleZh    String
   titleEn    String
   titleFr    String
+  
   contentZh  String   @db.Text
   contentEn  String   @db.Text
   contentFr  String   @db.Text
+  
+  author     String   @default("郭世越 Ellis Guo")
+  coverImage String?
+  
   visibility String   @default("public")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
