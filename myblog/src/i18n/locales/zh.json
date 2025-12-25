@@ -23,5 +23,13 @@
     "noContact": "还没有添加联系方式...",
     "clickToAdd": "点击下方编辑按钮添加",
     "lifeMoments": "生活"
+  },
+  "projects": {
+    "title": "项目",
+    "empty": "暂无项目..."
+  },
+  "posts": {
+    "title": "随笔",
+    "empty": "暂无随笔..."
   }
 }

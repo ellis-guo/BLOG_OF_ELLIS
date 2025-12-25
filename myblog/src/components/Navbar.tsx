@@ -37,7 +37,7 @@ export default function Navbar({ locale, translations }: NavbarProps) {
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/blog`} className="text-lg">
+                <Link href={`/${locale}/posts`} className="text-lg">
                   {translations.nav.blog}
                 </Link>
               </li>

@@ -62,10 +62,10 @@ export default async function ArticlePage({
 
   // Determine back button link based on article type
   const backLink =
-    article.type === "project" ? `/${locale}/projects` : `/${locale}/blog`;
+    article.type === "project" ? `/${locale}/projects` : `/${locale}/posts`;
 
   const backText =
-    article.type === "project" ? "← Back to Projects" : "← Back to Blog";
+    article.type === "project" ? "← Back to Projects" : "← Back to Posts";
 
   return (
     <div className="max-w-[800px] mx-auto">

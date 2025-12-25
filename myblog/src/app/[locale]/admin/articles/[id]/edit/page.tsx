@@ -226,7 +226,7 @@ export default function EditArticlePage() {
                 onChange={(e) => setType(e.target.value)}
                 className="w-full px-4 py-3 border-2 border-black focus:outline-none focus:border-[#F35029] transition-colors"
               >
-                <option value="post">Post (Blog)</option>
+                <option value="post">Post</option>
                 <option value="project">Project</option>
               </select>
             </div>
@@ -253,6 +253,7 @@ export default function EditArticlePage() {
                 className="w-full px-4 py-3 border-2 border-black focus:outline-none focus:border-[#F35029] transition-colors"
               >
                 <option value="public">Public</option>
+                <option value="guest">Guest Only</option>
                 <option value="draft">Draft</option>
               </select>
             </div>

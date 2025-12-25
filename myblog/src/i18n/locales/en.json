@@ -2,7 +2,7 @@
   "nav": {
     "about": "About",
     "projects": "Projects",
-    "blog": "Post",
+    "blog": "Posts",
     "signIn": "Sign In",
     "language": "Language"
   },
@@ -23,5 +23,13 @@
     "noContact": "No contact information yet...",
     "clickToAdd": "Click edit button below to add",
     "lifeMoments": "Life Moments"
+  },
+  "projects": {
+    "title": "Projects",
+    "empty": "No projects yet..."
+  },
+  "posts": {
+    "title": "Posts",
+    "empty": "No posts yet..."
   }
 }

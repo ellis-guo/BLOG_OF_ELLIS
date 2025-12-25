@@ -1,3 +1,9 @@
+
+enum Visibility {
+  public
+  guest
+  draft
+}
 generator client {
   provider = "prisma-client-js"
 }
@@ -61,7 +67,7 @@ model Article {
   author     String   @default("Ellis Guo (郭世越)")
   coverImage String?
   
-  visibility String   @default("public")
+  visibility Visibility @default(public)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }

@@ -2,7 +2,7 @@
   "nav": {
     "about": "À propos",
     "projects": "Projets",
-    "blog": "Billet",
+    "blog": "Billets",
     "signIn": "Se connecter",
     "language": "Langue"
   },
@@ -23,5 +23,13 @@
     "noContact": "Aucune information de contact...",
     "clickToAdd": "Cliquez sur le bouton modifier ci-dessous",
     "lifeMoments": "Moments de vie"
+  },
+  "projects": {
+    "title": "Projets",
+    "empty": "Pas encore de projets..."
+  },
+  "posts": {
+    "title": "Billets",
+    "empty": "Pas encore de billets..."
   }
 }
