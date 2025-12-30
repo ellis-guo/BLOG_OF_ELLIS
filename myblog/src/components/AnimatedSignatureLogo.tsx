@@ -33,13 +33,13 @@ export default function AnimatedSignatureLogo() {
           }}
         >
           <span
-            className="text-[32px] leading-none"
+            className="text-[48px] leading-none"
             style={{ fontFamily: "'Long Cang', cursive" }}
           >
             郭世越
           </span>
           <span
-            className="text-[24px]"
+            className="text-[32px]"
             style={{ fontFamily: "'Rock Salt', cursive", lineHeight: "1.6" }}
             suppressHydrationWarning
           >

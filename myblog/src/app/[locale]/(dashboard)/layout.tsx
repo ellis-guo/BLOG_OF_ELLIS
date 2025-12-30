@@ -12,10 +12,5 @@ export default async function DashboardLayout({
   const { locale } = await params;
   const translations = await getTranslations(locale as Locale);
 
-  return (
-    <div className="min-h-screen">
-      <Navbar locale={locale} translations={translations} />
-      <main className="max-w-[1024px] mx-auto px-5 py-12">{children}</main>
-    </div>
-  );
+  return <>{children}</>;
 }

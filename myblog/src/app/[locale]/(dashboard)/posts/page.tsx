@@ -5,6 +5,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import ArticleItem from "@/components/ArticleItem";
 import Footer from "@/components/Footer";
 import { Visibility } from "@prisma/client";
+import Navbar from "@/components/Navbar";
 
 export default async function PostsPage({
   params,
@@ -143,37 +144,40 @@ export default async function PostsPage({
   };
 
   return (
-    <div className="max-w-[1024px] mx-auto">
-      {/* Page Title */}
-      <h1 className="text-4xl mb-8">{translations.nav.blog}</h1>
+    <>
+      <Navbar locale={locale} translations={translations} />
+      <div className="max-w-[1024px] mx-auto">
+        {/* Page Title */}
+        <h1 className="text-4xl mb-8">{translations.nav.blog}</h1>
 
-      {/* Posts List */}
-      {posts.length === 0 ? (
-        <div className="text-center py-12 text-gray-400 italic">
-          {locale === "zh" && "暂无随笔..."}
-          {locale === "fr" && "Pas encore de billets..."}
-          {locale === "en" && "No posts yet..."}
-        </div>
-      ) : (
-        <div className="max-w-[800px]">
-          {posts.map((post) => (
-            <ArticleItem
-              key={post.id}
-              id={post.id}
-              title={getTitle(post)}
-              date={formatDate(post.createdAt)}
-              category={getCategoryLabel()}
-              description={getDescription(post)}
-              href={`/${locale}/articles/${post.slug}`}
-              isAdmin={isAdmin}
-              locale={locale}
-            />
-          ))}
-        </div>
-      )}
+        {/* Posts List */}
+        {posts.length === 0 ? (
+          <div className="text-center py-12 text-gray-400 italic">
+            {locale === "zh" && "暂无随笔..."}
+            {locale === "fr" && "Pas encore de billets..."}
+            {locale === "en" && "No posts yet..."}
+          </div>
+        ) : (
+          <div className="max-w-[800px]">
+            {posts.map((post) => (
+              <ArticleItem
+                key={post.id}
+                id={post.id}
+                title={getTitle(post)}
+                date={formatDate(post.createdAt)}
+                category={getCategoryLabel()}
+                description={getDescription(post)}
+                href={`/${locale}/articles/${post.slug}`}
+                isAdmin={isAdmin}
+                locale={locale}
+              />
+            ))}
+          </div>
+        )}
 
-      {/* Footer */}
-      <Footer />
-    </div>
+        {/* Footer */}
+        <Footer />
+      </div>
+    </>
   );
 }

@@ -43,7 +43,8 @@
 
 body {
   color: #555;
-  font-family: "Rubik", "Helvetica Neue", sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -55,7 +56,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Libre Baskerville", Georgia, serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
   font-weight: 700;
   color: #000;
 }
@@ -79,12 +81,6 @@ h6 {
   font-size: 16px;
 }
 
-.logo {
-  font-family: "Libre Baskerville", Georgia, serif;
-  font-size: 28px;
-  font-weight: 550;
-}
-
 a,
 button,
 .dropdown-item {
@@ -104,7 +100,7 @@ a:hover,
 button:hover,
 .dropdown-item:hover {
   color: #f35029;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .article-item-link:hover {
@@ -113,7 +109,7 @@ button:hover,
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: oklch(0.98 0.005 85);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);

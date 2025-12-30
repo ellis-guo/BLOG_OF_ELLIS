@@ -5,6 +5,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import ArticleItem from "@/components/ArticleItem";
 import Footer from "@/components/Footer";
 import { Visibility } from "@prisma/client";
+import Navbar from "@/components/Navbar";
 
 export default async function ProjectsPage({
   params,
@@ -143,37 +144,40 @@ export default async function ProjectsPage({
   };
 
   return (
-    <div className="max-w-[1024px] mx-auto">
-      {/* Page Title */}
-      <h1 className="text-4xl mb-8">{translations.nav.projects}</h1>
+    <>
+      <Navbar locale={locale} translations={translations} />
+      <div className="max-w-[1024px] mx-auto">
+        {/* Page Title */}
+        <h1 className="text-4xl mb-8">{translations.nav.projects}</h1>
 
-      {/* Projects List */}
-      {projects.length === 0 ? (
-        <div className="text-center py-12 text-gray-400 italic">
-          {locale === "zh" && "暂无项目..."}
-          {locale === "fr" && "Pas encore de projets..."}
-          {locale === "en" && "No projects yet..."}
-        </div>
-      ) : (
-        <div className="max-w-[800px]">
-          {projects.map((project) => (
-            <ArticleItem
-              key={project.id}
-              id={project.id}
-              title={getTitle(project)}
-              date={formatDate(project.createdAt)}
-              category={getCategoryLabel()}
-              description={getDescription(project)}
-              href={`/${locale}/articles/${project.slug}`}
-              isAdmin={isAdmin}
-              locale={locale}
-            />
-          ))}
-        </div>
-      )}
+        {/* Projects List */}
+        {projects.length === 0 ? (
+          <div className="text-center py-12 text-gray-400 italic">
+            {locale === "zh" && "暂无项目..."}
+            {locale === "fr" && "Pas encore de projets..."}
+            {locale === "en" && "No projects yet..."}
+          </div>
+        ) : (
+          <div className="max-w-[800px]">
+            {projects.map((project) => (
+              <ArticleItem
+                key={project.id}
+                id={project.id}
+                title={getTitle(project)}
+                date={formatDate(project.createdAt)}
+                category={getCategoryLabel()}
+                description={getDescription(project)}
+                href={`/${locale}/articles/${project.slug}`}
+                isAdmin={isAdmin}
+                locale={locale}
+              />
+            ))}
+          </div>
+        )}
 
-      {/* Footer */}
-      <Footer />
-    </div>
+        {/* Footer */}
+        <Footer />
+      </div>
+    </>
   );
 }
