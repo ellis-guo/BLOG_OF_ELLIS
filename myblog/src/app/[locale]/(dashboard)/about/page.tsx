@@ -4,7 +4,6 @@ import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { CometCard } from "@/components/ui/comet-card";
-import LifeMomentsSlider from "@/components/LifeMomentsSlider";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 
@@ -34,6 +33,13 @@ export default async function AboutPage({
     });
   }
 
+  // Get all experiences
+  const experiences = await prisma.experience.findMany({
+    orderBy: {
+      startDate: "desc",
+    },
+  });
+
   // Select bio based on locale
   const getBioByLocale = () => {
     if (!profile) return "";
@@ -48,6 +54,42 @@ export default async function AboutPage({
   };
 
   const bio = getBioByLocale();
+
+  // Helper functions for experiences
+  const getTitle = (exp: any) => {
+    switch (locale) {
+      case "zh":
+        return exp.titleZh;
+      case "fr":
+        return exp.titleFr;
+      default:
+        return exp.titleEn;
+    }
+  };
+
+  const getDescription = (exp: any) => {
+    switch (locale) {
+      case "zh":
+        return exp.descriptionZh;
+      case "fr":
+        return exp.descriptionFr;
+      default:
+        return exp.descriptionEn;
+    }
+  };
+
+  const formatDate = (date: Date) => {
+    const localeMap: Record<string, string> = {
+      zh: "zh-CN",
+      en: "en-US",
+      fr: "fr-FR",
+    };
+
+    return new Date(date).toLocaleDateString(localeMap[locale] || "en-US", {
+      year: "numeric",
+      month: "short",
+    });
+  };
 
   // Contact info array for rendering
   const contactInfo = [
@@ -79,12 +121,6 @@ export default async function AboutPage({
     },
     { icon: "💬", label: "WeChat", value: profile?.wechat, link: null },
   ].filter((item) => item.value);
-
-  const lifeMoments = await prisma.lifeMoment.findMany({
-    orderBy: {
-      order: "asc",
-    },
-  });
 
   return (
     <div>
@@ -190,7 +226,7 @@ export default async function AboutPage({
               <div className="pt-6">
                 <Link
                   href={`/${locale}/admin/profile/edit`}
-                  className="inline-block px-6 py-3 border-2 border-black bg-white hover:bg-[#F35029] hover:!text-white hover:border-[#F35029] transition-all font-semibold"
+                  className="inline-block px-6 py-3 border-2 border-black bg-white hover:bg-[#F35029] hover:!text-white hover:border-[#F35029] transition-all font-semibold hover:!no-underline"
                 >
                   {translations.about.editProfile}
                 </Link>
@@ -199,16 +235,72 @@ export default async function AboutPage({
           </div>
         </div>
 
-        {/* Life Moments area */}
+        {/* Experience Timeline */}
         <div className="py-8 border-t border-[#ccc]">
-          <h2 className="text-2xl mb-6 font-bold">
-            {translations.about.lifeMoments}
-          </h2>
-          <LifeMomentsSlider
-            moments={lifeMoments}
-            isAdmin={isAdmin}
-            locale={locale}
-          />
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold">Experience</h2>
+            {isAdmin && (
+              <Link
+                href={`/${locale}/admin/experiences`}
+                className="px-6 py-3 border-2 border-black bg-white hover:bg-[#F35029] hover:!text-white hover:border-[#F35029] transition-all font-semibold hover:!no-underline"
+              >
+                Manage Experiences
+              </Link>
+            )}
+          </div>
+
+          {experiences.length === 0 ? (
+            <p className="text-gray-400 italic">
+              No experiences yet.
+              {isAdmin && " Click Manage Experiences to add."}
+            </p>
+          ) : (
+            <div className="space-y-12">
+              {experiences.map((exp) => (
+                <div
+                  key={exp.id}
+                  className="relative pl-8 border-l-2 border-gray-200"
+                >
+                  {/* Timeline dot */}
+                  <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-[#F35029] border-2 border-white" />
+
+                  {/* Time period */}
+                  <div className="text-sm text-gray-500 mb-1">
+                    {formatDate(exp.startDate)} —{" "}
+                    {exp.endDate ? formatDate(exp.endDate) : "Present"}
+                  </div>
+
+                  {/* Title and Organization */}
+                  <h3 className="text-2xl font-bold mb-2">{getTitle(exp)}</h3>
+                  <div className="text-base text-gray-600 mb-3">
+                    {exp.organization}
+                    {exp.location && ` · ${exp.location}`}
+                  </div>
+
+                  {/* Description */}
+                  {getDescription(exp) && (
+                    <p className="text-base text-gray-700 leading-relaxed mb-4">
+                      {getDescription(exp)}
+                    </p>
+                  )}
+
+                  {/* Tags */}
+                  {exp.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {exp.tags.map((tag, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Footer */}

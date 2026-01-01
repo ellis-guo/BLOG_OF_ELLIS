@@ -1,0 +1,242 @@
+================================================================================
+PROJECT STATUS & CONTEXT FOR NEW CLAUDE SESSIONS
+Last Updated: December 31, 2025
+================================================================================
+
+IMPORTANT: This file helps new Claude sessions understand the project quickly.
+Read this FIRST before helping with any tasks.
+
+================================================================================
+PROJECT OVERVIEW
+================================================================================
+
+Personal Blog Website - Portfolio & Resume Style
+- Tech Stack: Next.js 15 + TypeScript + Prisma + PostgreSQL + Clerk Auth
+- Design: Brittany Chiang-inspired single-page resume with sidebar navigation
+- Languages: Chinese / English / French (i18n routing)
+- Color Scheme: Black text + #F35029 orange accent + #f5f5f0 warm background
+- Typography: Inter (all text, 400-700 weights)
+
+Creator: Ellis Guo (郭世越)
+Admin username: "admin"
+Development Philosophy: "Build first, refine later" - step by step approach
+
+================================================================================
+CURRENT ARCHITECTURE (December 31, 2025)
+================================================================================
+
+Homepage Design - Single Page Resume
+- Layout: Left sidebar (48%) + Right content (52%) on desktop
+- Sidebar: Fixed navigation with scroll-spy, name, intro, nav links
+- Content: Four sections (About, Experience, Projects, Posts) with smooth scroll
+- Responsive: Stacked on mobile (<1024px), sidebar shows name/intro only
+
+Database Models (Prisma + PostgreSQL):
+1. Profile - Personal information (bio in 3 languages, contact info, photo)
+2. LifeMoment - Photo gallery (imageUrl, caption, intro, order, time)
+3. Article - Unified model for both blog posts and projects
+   - type: "project" or "post"
+   - Three-language content (titleZh/En/Fr, descriptionZh/En/Fr, contentZh/En/Fr)
+   - visibility: Enum (public, guest, draft)
+   - Markdown support via react-markdown + remark-gfm
+
+Authentication & Roles:
+- Clerk authentication
+- Admin user (username: "admin") - full access
+- Guest users (logged in) - see public + guest content
+- Public visitors - see public content only
+
+================================================================================
+COMPLETED FEATURES
+================================================================================
+
+Phase 1-9: Core System (Completed)
+- Next.js project with App Router, i18n middleware, Prisma ORM
+- Clerk authentication integrated
+- Article management (CRUD with SimpleMDE editor)
+- Projects and Posts list pages with role-based filtering
+- Article detail pages with markdown rendering
+- About page with Profile + Life Moments slider
+- Admin pages for managing articles, profile, moments
+
+Phase 10: Homepage Redesign - BC Style (December 31, 2025)
+
+Key Components:
+1. SidebarNav (src/components/SidebarNav.tsx)
+   - Left fixed sidebar with scroll-spy navigation
+   - Signature animation, job title, slogan
+   - 4 nav buttons: About, Experience, Projects, Writing
+   - Active section highlighting (orange line + text)
+   - Responsive: hidden nav on mobile, shows name/intro only
+
+2. ViewAllButton (src/components/ViewAllButton.tsx)
+   - Minimal text link with arrow
+   - Orange text, black on hover
+   - Opens in new tab (target="_blank")
+   - Used at bottom of each homepage section
+
+3. Navbar Simplified (src/components/Navbar.tsx)
+   - Removed all navigation links
+   - Only: Language switcher + UserButton/SignIn
+   - Fixed at top: fixed top-0 left-0 right-0 z-50
+   - No max-width constraint, right-aligned
+   - Same across homepage and detail pages
+
+Homepage Structure (src/app/[locale]/(dashboard)/page.tsx):
+- Container: max-w-[1280px] centered
+- Layout: flex with lg:flex-row (desktop) / flex-col (mobile)
+- Left: SidebarNav (w-[48%] on desktop)
+- Right: Content sections (w-[52%] on desktop)
+- Sections: About, Experience, Projects, Posts
+- Each section: min-h-screen, mb-36, scroll-mt for offset
+- ViewAllButton at bottom of each section
+
+Typography & Styling:
+- Font: Inter for everything (body + headings)
+- Signature: Long Cang (中文) + Rock Salt (English) - unchanged
+- Background: #f5f5f0 (warm off-white)
+- Links: no underline on hover, color change to orange
+- Headings: Inter 700, responsive sizing (text-4xl lg:text-5xl)
+
+Detail Pages (Unchanged):
+- /about: Full profile + Life Moments + contact info
+- /projects: All projects list with role-based filtering
+- /posts: All posts list with role-based filtering
+- /articles/[slug]: Article detail with markdown rendering
+- All use simplified Navbar + existing layouts
+
+================================================================================
+KEY TECHNICAL PATTERNS
+================================================================================
+
+Scroll-Spy Navigation (SidebarNav)
+- Monitor scroll with window.addEventListener("scroll")
+- Check section position with getBoundingClientRect()
+- Update activeSection state when section.top <= 200
+- Smooth scroll with element.scrollIntoView({ behavior: "smooth" })
+
+Responsive Layout Strategy
+- Desktop (≥1024px): Left-right split, sticky sidebar, navigation visible
+- Mobile (<1024px): Stacked, sidebar shows name/intro, navigation hidden
+- Breakpoint: lg: (1024px) following BC's pattern
+- Layout: flex-col lg:flex-row on container
+- Sidebar: w-full lg:w-[48%], lg:sticky lg:top-0, lg:h-screen
+- Content: w-full lg:w-[52%]
+
+Component Reusability
+- ViewAllButton: Same component, different props (href, text)
+- Used 4 times with different destinations
+- Maintains consistent styling across all sections
+
+Typography System
+- Body: Inter 400 (14px base)
+- Headings: Inter 700
+- Navigation active: Inter 600, orange
+- Navigation inactive: Inter 500, gray
+- All defined via Tailwind classes for consistency
+
+================================================================================
+FILE STRUCTURE
+================================================================================
+
+Key New/Modified Files:
+- src/components/SidebarNav.tsx (new) - Left sidebar with navigation
+- src/components/ViewAllButton.tsx (new) - Section transition button
+- src/components/Navbar.tsx (modified) - Simplified to language + auth only
+- src/app/[locale]/(dashboard)/page.tsx (rewritten) - Single-page resume
+- src/app/globals.css (modified) - Inter font, warm background, no underlines
+
+Unchanged Files:
+- src/app/[locale]/(dashboard)/about/page.tsx - Detail page
+- src/app/[locale]/(dashboard)/projects/page.tsx - List page
+- src/app/[locale]/(dashboard)/posts/page.tsx - List page
+- src/app/[locale]/(dashboard)/articles/[slug]/page.tsx - Article detail
+- src/components/Footer.tsx - Used on detail pages
+- src/components/LanguageSwitcher.tsx - Reused
+- src/components/AnimatedSignatureLogo.tsx - Reused
+- All API routes, database models, admin pages - Unchanged
+
+================================================================================
+PENDING FEATURES
+================================================================================
+
+High Priority (Homepage Content):
+- Fill About section with real bio (currently placeholder)
+- Add real Experience entries (internships, projects, education details)
+- Add 2-3 featured projects with descriptions and screenshots
+- Add 3-5 latest posts from database (currently placeholder)
+- Add social icons to SidebarNav bottom (GitHub, LinkedIn, Email)
+
+Medium Priority:
+- Project screenshots/thumbnails for homepage
+- Fetch real posts from database for Posts section
+- Consider adding resume download link
+- Improve mobile navigation (hamburger menu?)
+
+Low Priority:
+- Dark mode support (deferred)
+- Image upload for SimpleMDE (deferred)
+- Edit/reorder Life Moments (deferred)
+- Search functionality (deferred)
+
+On Hold (Performance & Features):
+- Docker connection pool optimization
+- Image optimization
+- Font loading optimization
+- npm audit security fixes
+- Accessibility improvements
+
+================================================================================
+IMPORTANT NOTES FOR NEW SESSIONS
+================================================================================
+
+Design Philosophy:
+- Homepage = Professional resume for recruiters/employers
+- Detail pages = Complete information for interested visitors
+- Single-page scroll for quick overview, detail pages for depth
+
+Key User Flows:
+1. Recruiter visits homepage → scrolls through sections → clicks ViewAllButton 
+   → views full content in new tab → closes tab, returns to homepage
+2. Visitor browses → clicks navbar Language → switches language seamlessly
+3. Mobile user → sees name + intro, scrolls through content, no sidebar nav
+
+Responsive Behavior:
+- Desktop (≥1024px): Sidebar navigation visible and functional
+- Mobile (<1024px): Sidebar collapses to name + intro, navigation hidden
+- All sections remain scrollable and accessible on mobile
+- ViewAllButtons work on all screen sizes
+
+Content Strategy:
+- Homepage: Curated/featured content (best projects, latest posts)
+- Detail pages: Complete archives (all projects, all posts, full bio)
+- This separation allows professional homepage + casual/personal detail pages
+
+================================================================================
+COLLABORATION REMINDERS
+================================================================================
+
+Ellis's Working Style:
+- Step-by-step confirmation required before major changes
+- "每个东西一步步做，我不说你不做"
+- Comments in English only (critical requirement)
+- Wait for "可以写代码了" / "做吧" / "继续" before providing code
+- Never assume requirements or make unauthorized changes
+
+Code Standards:
+- Complete file replacements, not incremental changes
+- Explain reasoning before code
+- Use analogies for technical concepts
+- Keep commit messages SHORT and professional English
+- Numbered list format (1. 2. 3.)
+
+Critical Rules (READ COLLABORATION_RULES.txt):
+- Explain "why" before "how"
+- Wait for confirmation at each step
+- Never give code without permission
+- English comments always
+- No assumptions about requirements
+
+================================================================================
+END OF PROJECT GUIDE
+================================================================================

@@ -1,9 +1,3 @@
-
-enum Visibility {
-  public
-  guest
-  draft
-}
 generator client {
   provider = "prisma-client-js"
 }
@@ -37,11 +31,11 @@ model Profile {
 
 model LifeMoment {
   id        String   @id @default(cuid())
-  imageUrl  String   // Photo URL from Cloudinary
-  caption   String?  // Short caption for the photo
-  intro     String?  @db.Text  // Longer introduction/story
-  order     Int      @default(0)  // Display order
-  time      DateTime @default(now())  // When this moment happened
+  imageUrl  String
+  caption   String?
+  intro     String?  @db.Text
+  order     Int      @default(0)
+  time      DateTime @default(now())
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -67,7 +61,62 @@ model Article {
   author     String   @default("Ellis Guo (郭世越)")
   coverImage String?
   
-  visibility Visibility @default(public)
+  tags       String[] // Tech stack or categories
+  
+  visibility String   @default("public")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+model Homepage {
+  id  String @id @default(cuid())
+  
+  // Slogan (short intro)
+  sloganZh  String   @default("")
+  sloganEn  String   @default("")
+  sloganFr  String   @default("")
+  
+  // About Section (detailed intro)
+  aboutZh  String   @db.Text
+  aboutEn  String   @db.Text
+  aboutFr  String   @db.Text
+  
+  // Featured content (Article IDs)
+  featuredExperienceIds  String[]
+  featuredProjectIds     String[]
+  featuredPostIds        String[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Experience {
+  id  String @id @default(cuid())
+  
+  // Title (three languages)
+  titleZh       String
+  titleEn       String
+  titleFr       String
+  
+  // Organization/Company
+  organization  String
+  location      String?
+  
+  // Description (three languages)
+  descriptionZh String   @db.Text
+  descriptionEn String   @db.Text
+  descriptionFr String   @db.Text
+  
+  // Tags (skills/technologies)
+  tags          String[]
+  
+  // Time period
+  startDate     DateTime
+  endDate       DateTime?  // null means "Present"
+  
+  // Display order
+  order         Int      @default(0)
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }

@@ -1,8 +1,13 @@
 import SidebarNav from "@/components/SidebarNav";
 import ViewAllButton from "@/components/ViewAllButton";
+import HomepageExperienceItem from "@/components/HomepageExperienceItem";
+import HomepageArticleItem from "@/components/HomepageArticleItem";
 import Navbar from "@/components/Navbar";
 import { getTranslations } from "@/i18n/i18n";
 import type { Locale } from "@/i18n/i18n";
+import prisma from "@/lib/prisma";
+import { currentUser } from "@clerk/nextjs/server";
+import Link from "next/link";
 
 export default async function HomePage({
   params,
@@ -11,6 +16,71 @@ export default async function HomePage({
 }) {
   const { locale } = await params;
   const translations = await getTranslations(locale as Locale);
+  const user = await currentUser();
+  const isAdmin = user?.username === "admin";
+
+  // Fetch homepage data
+  const homepage = await prisma.homepage.findFirst();
+
+  // Get content based on locale
+  const slogan =
+    locale === "zh"
+      ? homepage?.sloganZh
+      : locale === "fr"
+      ? homepage?.sloganFr
+      : homepage?.sloganEn;
+
+  const about =
+    locale === "zh"
+      ? homepage?.aboutZh
+      : locale === "fr"
+      ? homepage?.aboutFr
+      : homepage?.aboutEn;
+
+  // Fetch featured experiences
+  const experiences = homepage?.featuredExperienceIds?.length
+    ? await prisma.experience.findMany({
+        where: { id: { in: homepage.featuredExperienceIds } },
+        orderBy: { startDate: "desc" },
+      })
+    : [];
+
+  // Fetch featured projects
+  const projects = homepage?.featuredProjectIds?.length
+    ? await prisma.article.findMany({
+        where: { id: { in: homepage.featuredProjectIds } },
+      })
+    : [];
+
+  // Fetch featured posts
+  const posts = homepage?.featuredPostIds?.length
+    ? await prisma.article.findMany({
+        where: { id: { in: homepage.featuredPostIds } },
+      })
+    : [];
+
+  // Helper functions
+  const getTitle = (item: any) => {
+    switch (locale) {
+      case "zh":
+        return item.titleZh;
+      case "fr":
+        return item.titleFr;
+      default:
+        return item.titleEn;
+    }
+  };
+
+  const getDescription = (item: any) => {
+    switch (locale) {
+      case "zh":
+        return item.descriptionZh;
+      case "fr":
+        return item.descriptionFr;
+      default:
+        return item.descriptionEn;
+    }
+  };
 
   return (
     <div className="min-h-screen">
@@ -32,33 +102,39 @@ export default async function HomePage({
               className="min-h-screen mb-36 scroll-mt-16 lg:scroll-mt-24"
             >
               <h2 className="text-4xl lg:text-5xl font-bold mb-8">About</h2>
-              <div className="space-y-4 text-base text-gray-700 leading-relaxed">
-                <p>
-                  I'm a full-stack developer passionate about building modern
-                  web applications that combine elegant design with robust
-                  engineering. My favorite work lies at the intersection of
-                  frontend and backend, creating experiences that are both
-                  beautiful and performant.
-                </p>
-                <p>
-                  Currently, I'm a Computer Science graduate student at
-                  Northeastern University in the ALIGN program, focusing on
-                  distributed systems and cloud computing. I'm exploring AI
-                  technologies and building projects that showcase full-stack
-                  development skills.
-                </p>
-                <p>
-                  In my free time, I enjoy learning new technologies,
-                  contributing to open source projects, and sharing knowledge
-                  through technical writing.
-                </p>
-              </div>
 
-              <div className="mt-12">
+              {/* Slogan */}
+              {slogan && (
+                <p className="text-xl font-semibold mb-8 text-gray-800">
+                  {slogan}
+                </p>
+              )}
+
+              {/* About content */}
+              {about ? (
+                <div className="space-y-4 text-base text-gray-700 leading-relaxed whitespace-pre-wrap">
+                  {about}
+                </div>
+              ) : (
+                <div className="text-gray-400 italic">
+                  No content yet.
+                  {isAdmin && " Click Edit Homepage to add content."}
+                </div>
+              )}
+
+              <div className="mt-12 flex gap-4">
                 <ViewAllButton
                   href={`/${locale}/about`}
                   text="View Full Profile"
                 />
+                {isAdmin && (
+                  <Link
+                    href={`/${locale}/admin/homepage/edit`}
+                    className="inline-flex items-center gap-2 text-[#F35029] hover:text-black transition-colors font-semibold text-sm hover:no-underline"
+                  >
+                    Edit Homepage
+                  </Link>
+                )}
               </div>
             </section>
 
@@ -70,24 +146,28 @@ export default async function HomePage({
               <h2 className="text-4xl lg:text-5xl font-bold mb-8">
                 Experience
               </h2>
-              <div className="space-y-12">
-                <div>
-                  <div className="text-sm text-gray-500 mb-1">
-                    2024 — Present
-                  </div>
-                  <h3 className="text-2xl font-bold mb-2">
-                    Northeastern University
-                  </h3>
-                  <p className="text-base text-gray-600 mb-3">
-                    Master of Science in Computer Science - ALIGN Program
-                  </p>
-                  <p className="text-base text-gray-700 leading-relaxed">
-                    Relevant coursework: Algorithms, Data Structures,
-                    Object-Oriented Design. Building full-stack applications
-                    with modern web technologies.
-                  </p>
+
+              {experiences.length === 0 ? (
+                <div className="text-gray-400 italic">
+                  No experiences yet.
+                  {isAdmin && " Add some in Edit Homepage."}
                 </div>
-              </div>
+              ) : (
+                <div className="space-y-12">
+                  {experiences.map((exp) => (
+                    <HomepageExperienceItem
+                      key={exp.id}
+                      title={getTitle(exp)}
+                      organization={exp.organization}
+                      location={exp.location || undefined}
+                      description={getDescription(exp)}
+                      tags={exp.tags}
+                      startDate={exp.startDate}
+                      endDate={exp.endDate}
+                    />
+                  ))}
+                </div>
+              )}
 
               <div className="mt-12">
                 <ViewAllButton
@@ -105,33 +185,26 @@ export default async function HomePage({
               <h2 className="text-4xl lg:text-5xl font-bold mb-8">
                 Featured Projects
               </h2>
-              <div className="space-y-16">
-                <div>
-                  <h3 className="text-2xl font-bold mb-3">
-                    Personal Blog Website
-                  </h3>
-                  <p className="text-base text-gray-700 leading-relaxed mb-4">
-                    A full-stack multilingual blog platform with role-based
-                    access control, featuring Chinese, English, and French
-                    content management. Built with modern technologies and clean
-                    architecture.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded">
-                      Next.js
-                    </span>
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded">
-                      TypeScript
-                    </span>
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded">
-                      Prisma
-                    </span>
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded">
-                      PostgreSQL
-                    </span>
-                  </div>
+
+              {projects.length === 0 ? (
+                <div className="text-gray-400 italic">
+                  No projects yet.
+                  {isAdmin && " Add some in Edit Homepage."}
                 </div>
-              </div>
+              ) : (
+                <div className="space-y-8">
+                  {projects.map((project) => (
+                    <HomepageArticleItem
+                      key={project.id}
+                      title={getTitle(project)}
+                      date={project.createdAt}
+                      description={getDescription(project)}
+                      tags={project.tags}
+                      href={`/${locale}/articles/${project.slug}`}
+                    />
+                  ))}
+                </div>
+              )}
 
               <div className="mt-12">
                 <ViewAllButton
@@ -149,17 +222,26 @@ export default async function HomePage({
               <h2 className="text-4xl lg:text-5xl font-bold mb-8">
                 Latest Writing
               </h2>
-              <div className="space-y-8">
-                <div>
-                  <h3 className="text-xl font-semibold mb-1 hover:text-[#F35029] transition-colors">
-                    Sample Article Title
-                  </h3>
-                  <p className="text-sm text-gray-500 mb-2">December 2024</p>
-                  <p className="text-base text-gray-700">
-                    Brief description or excerpt of the article...
-                  </p>
+
+              {posts.length === 0 ? (
+                <div className="text-gray-400 italic">
+                  No posts yet.
+                  {isAdmin && " Add some in Edit Homepage."}
                 </div>
-              </div>
+              ) : (
+                <div className="space-y-8">
+                  {posts.map((post) => (
+                    <HomepageArticleItem
+                      key={post.id}
+                      title={getTitle(post)}
+                      date={post.createdAt}
+                      description={getDescription(post)}
+                      tags={post.tags}
+                      href={`/${locale}/articles/${post.slug}`}
+                    />
+                  ))}
+                </div>
+              )}
 
               <div className="mt-12">
                 <ViewAllButton
