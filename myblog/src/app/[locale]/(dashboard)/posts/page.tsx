@@ -4,7 +4,6 @@ import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import ArticleItem from "@/components/ArticleItem";
 import Footer from "@/components/Footer";
-import { Visibility } from "@prisma/client";
 import Navbar from "@/components/Navbar";
 
 export default async function PostsPage({
@@ -24,26 +23,26 @@ export default async function PostsPage({
   let whereClause: {
     type: string;
     visibility?:
-      | Visibility
+      | string
       | {
-          in: Visibility[];
+          in: string[];
         };
   };
 
   if (isAdmin) {
     // Admin sees everything
-    whereClause = { type: "project" };
+    whereClause = { type: "post" };
   } else if (isGuest) {
     // Guest sees public + guest
     whereClause = {
-      type: "project",
-      visibility: { in: [Visibility.public, Visibility.guest] },
+      type: "post",
+      visibility: { in: ["public", "guest"] },
     };
   } else {
     // Visitor sees only public
     whereClause = {
-      type: "project",
-      visibility: Visibility.public,
+      type: "post",
+      visibility: "public",
     };
   }
 
@@ -146,7 +145,7 @@ export default async function PostsPage({
   return (
     <>
       <Navbar locale={locale} translations={translations} />
-      <div className="max-w-[1024px] mx-auto">
+      <div className="max-w-[1024px] mx-auto pt-20">
         {/* Page Title */}
         <h1 className="text-4xl mb-8">{translations.nav.blog}</h1>
 

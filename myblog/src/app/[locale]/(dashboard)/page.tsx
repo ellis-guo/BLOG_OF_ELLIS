@@ -7,7 +7,7 @@ import { getTranslations } from "@/i18n/i18n";
 import type { Locale } from "@/i18n/i18n";
 import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
-import Link from "next/link";
+import ScrollProgressBar from "@/components/ScrollProgressBar";
 
 export default async function HomePage({
   params,
@@ -84,6 +84,10 @@ export default async function HomePage({
 
   return (
     <div className="min-h-screen">
+      {/* Scroll Progress Bar
+      // UGLY!CANCELED!
+      <ScrollProgressBar /> */}
+
       {/* Top bar: Language + User button */}
       <Navbar locale={locale} translations={translations} />
 
@@ -92,16 +96,22 @@ export default async function HomePage({
         {/* Main layout: Sidebar + Content */}
         <div className="flex flex-col lg:flex-row">
           {/* Left sidebar: Fixed navigation */}
-          <SidebarNav />
+          <SidebarNav isAdmin={isAdmin} locale={locale} />
 
           {/* Right content area: Scrollable */}
-          <main className="w-full lg:w-[52%] px-6 lg:px-24 py-12 lg:py-24">
+          <main className="w-full lg:w-[54%] lg:max-w-[900px] px-6 lg:px-12 py-12 lg:py-24">
             {/* About Section */}
             <section
               id="about"
               className="min-h-screen mb-36 scroll-mt-16 lg:scroll-mt-24"
             >
-              <h2 className="text-4xl lg:text-5xl font-bold mb-8">About</h2>
+              <h2 className="text-4xl lg:text-5xl font-bold mb-8">
+                {locale === "zh"
+                  ? "关于"
+                  : locale === "fr"
+                  ? "À propos"
+                  : "About"}
+              </h2>
 
               {/* Slogan */}
               {slogan && (
@@ -122,19 +132,17 @@ export default async function HomePage({
                 </div>
               )}
 
-              <div className="mt-12 flex gap-4">
+              <div className="mt-12">
                 <ViewAllButton
                   href={`/${locale}/about`}
-                  text="View Full Profile"
+                  text={
+                    locale === "zh"
+                      ? "查看完整资料"
+                      : locale === "fr"
+                      ? "Voir le profil complet"
+                      : "View Full Profile"
+                  }
                 />
-                {isAdmin && (
-                  <Link
-                    href={`/${locale}/admin/homepage/edit`}
-                    className="inline-flex items-center gap-2 text-[#F35029] hover:text-black transition-colors font-semibold text-sm hover:no-underline"
-                  >
-                    Edit Homepage
-                  </Link>
-                )}
               </div>
             </section>
 
@@ -144,7 +152,11 @@ export default async function HomePage({
               className="min-h-screen mb-36 scroll-mt-16 lg:scroll-mt-24"
             >
               <h2 className="text-4xl lg:text-5xl font-bold mb-8">
-                Experience
+                {locale === "zh"
+                  ? "履历"
+                  : locale === "fr"
+                  ? "Expérience"
+                  : "Experience"}
               </h2>
 
               {experiences.length === 0 ? (
@@ -172,7 +184,13 @@ export default async function HomePage({
               <div className="mt-12">
                 <ViewAllButton
                   href={`/${locale}/about`}
-                  text="View Full Profile"
+                  text={
+                    locale === "zh"
+                      ? "查看完整资料"
+                      : locale === "fr"
+                      ? "Voir le profil complet"
+                      : "View Full Profile"
+                  }
                 />
               </div>
             </section>
@@ -183,7 +201,11 @@ export default async function HomePage({
               className="min-h-screen mb-36 scroll-mt-16 lg:scroll-mt-24"
             >
               <h2 className="text-4xl lg:text-5xl font-bold mb-8">
-                Featured Projects
+                {locale === "zh"
+                  ? "项目"
+                  : locale === "fr"
+                  ? "Projets"
+                  : "Projects"}
               </h2>
 
               {projects.length === 0 ? (
@@ -209,7 +231,13 @@ export default async function HomePage({
               <div className="mt-12">
                 <ViewAllButton
                   href={`/${locale}/projects`}
-                  text="View Full Project Archive"
+                  text={
+                    locale === "zh"
+                      ? "查看所有项目"
+                      : locale === "fr"
+                      ? "Voir tous les projets"
+                      : "View Full Project Archive"
+                  }
                 />
               </div>
             </section>
@@ -220,7 +248,11 @@ export default async function HomePage({
               className="min-h-screen mb-36 scroll-mt-16 lg:scroll-mt-24"
             >
               <h2 className="text-4xl lg:text-5xl font-bold mb-8">
-                Latest Writing
+                {locale === "zh"
+                  ? "随笔"
+                  : locale === "fr"
+                  ? "Articles"
+                  : "Posts"}
               </h2>
 
               {posts.length === 0 ? (
@@ -246,7 +278,13 @@ export default async function HomePage({
               <div className="mt-12">
                 <ViewAllButton
                   href={`/${locale}/posts`}
-                  text="View All Posts"
+                  text={
+                    locale === "zh"
+                      ? "查看所有随笔"
+                      : locale === "fr"
+                      ? "Voir tous les articles"
+                      : "View All Posts"
+                  }
                 />
               </div>
             </section>

@@ -26,7 +26,7 @@ export default function HomepageExperienceItem({
   };
 
   return (
-    <div className="group relative">
+    <div className="group relative -ml-4 pl-4 py-4 border-l-4 border-transparent lg:hover:border-l-[#F35029] lg:hover:bg-[#F35029]/3 lg:hover:pl-6 transition-all duration-200 cursor-default">
       {/* Time period */}
       <div className="text-sm text-gray-500 mb-1">
         {formatDate(startDate)} — {endDate ? formatDate(endDate) : "Present"}
@@ -52,7 +52,7 @@ export default function HomepageExperienceItem({
           {tags.map((tag, idx) => (
             <span
               key={idx}
-              className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded"
+              className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded lg:group-hover:bg-[#F35029]/10 transition-colors"
             >
               {tag}
             </span>

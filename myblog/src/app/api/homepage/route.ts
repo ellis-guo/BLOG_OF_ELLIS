@@ -42,6 +42,7 @@ export async function PUT(request: NextRequest) {
       aboutZh,
       aboutEn,
       aboutFr,
+      featuredExperienceIds,
       featuredProjectIds,
       featuredPostIds,
     } = body;
@@ -59,6 +60,7 @@ export async function PUT(request: NextRequest) {
           aboutZh: aboutZh || "",
           aboutEn: aboutEn || "",
           aboutFr: aboutFr || "",
+          featuredExperienceIds: featuredExperienceIds || [],
           featuredProjectIds: featuredProjectIds || [],
           featuredPostIds: featuredPostIds || [],
         },
@@ -68,20 +70,16 @@ export async function PUT(request: NextRequest) {
       homepage = await prisma.homepage.update({
         where: { id: homepage.id },
         data: {
-          sloganZh: sloganZh !== undefined ? sloganZh : homepage.sloganZh,
-          sloganEn: sloganEn !== undefined ? sloganEn : homepage.sloganEn,
-          sloganFr: sloganFr !== undefined ? sloganFr : homepage.sloganFr,
-          aboutZh: aboutZh !== undefined ? aboutZh : homepage.aboutZh,
-          aboutEn: aboutEn !== undefined ? aboutEn : homepage.aboutEn,
-          aboutFr: aboutFr !== undefined ? aboutFr : homepage.aboutFr,
-          featuredProjectIds:
-            featuredProjectIds !== undefined
-              ? featuredProjectIds
-              : homepage.featuredProjectIds,
-          featuredPostIds:
-            featuredPostIds !== undefined
-              ? featuredPostIds
-              : homepage.featuredPostIds,
+          sloganZh: sloganZh ?? homepage.sloganZh,
+          sloganEn: sloganEn ?? homepage.sloganEn,
+          sloganFr: sloganFr ?? homepage.sloganFr,
+          aboutZh: aboutZh ?? homepage.aboutZh,
+          aboutEn: aboutEn ?? homepage.aboutEn,
+          aboutFr: aboutFr ?? homepage.aboutFr,
+          featuredExperienceIds:
+            featuredExperienceIds ?? homepage.featuredExperienceIds,
+          featuredProjectIds: featuredProjectIds ?? homepage.featuredProjectIds,
+          featuredPostIds: featuredPostIds ?? homepage.featuredPostIds,
         },
       });
     }

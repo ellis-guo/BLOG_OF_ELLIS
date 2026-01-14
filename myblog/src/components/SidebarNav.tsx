@@ -2,8 +2,17 @@
 
 import { useState, useEffect } from "react";
 import AnimatedSignatureLogo from "./AnimatedSignatureLogo";
+import Link from "next/link";
 
-export default function SidebarNav() {
+interface SidebarNavProps {
+  isAdmin?: boolean;
+  locale?: string;
+}
+
+export default function SidebarNav({
+  isAdmin = false,
+  locale = "en",
+}: SidebarNavProps) {
   const [activeSection, setActiveSection] = useState("about");
 
   // Monitor scroll position and update active section
@@ -35,18 +44,36 @@ export default function SidebarNav() {
   };
 
   const navItems = [
-    { id: "about", label: "About" },
-    { id: "experience", label: "Experience" },
-    { id: "projects", label: "Projects" },
-    { id: "posts", label: "Writing" },
+    {
+      id: "about",
+      label: locale === "zh" ? "关于" : locale === "fr" ? "À propos" : "About",
+    },
+    {
+      id: "experience",
+      label:
+        locale === "zh"
+          ? "履历"
+          : locale === "fr"
+          ? "Expériences"
+          : "Experiences",
+    },
+    {
+      id: "projects",
+      label:
+        locale === "zh" ? "项目" : locale === "fr" ? "Projets" : "Projects",
+    },
+    {
+      id: "posts",
+      label: locale === "zh" ? "随笔" : locale === "fr" ? "Articles" : "Posts",
+    },
   ];
 
   return (
-    <aside className="w-full lg:w-[48%] lg:h-screen lg:sticky lg:top-0 flex flex-col lg:justify-between py-12 lg:py-24 px-6 lg:px-12">
+    <aside className="w-full lg:w-[46%] lg:h-screen lg:sticky lg:top-0 flex flex-col lg:justify-between py-30 lg:py-24 px-6 lg:px-12">
       {/* Top section: Name + Intro + Navigation */}
       <div>
         {/* Logo/Signature */}
-        <div className="mb-8">
+        <div className="mb-8 flex justify-center lg:justify-start pb-12 lg:pb-0">
           <AnimatedSignatureLogo />
         </div>
 
@@ -101,9 +128,20 @@ export default function SidebarNav() {
         </nav>
       </div>
 
-      {/* Bottom section: Social links - Hidden on mobile */}
-      <div className="text-sm text-gray-400 hidden lg:block">
-        {/* Placeholder for social links */}
+      {/* Bottom section: Edit Homepage button */}
+      <div className="hidden lg:block">
+        {isAdmin && (
+          <Link
+            href={`/${locale}/admin/homepage/edit`}
+            className="inline-block px-4 py-2 border-2 border-black bg-white hover:bg-[#F35029] hover:!text-white hover:border-[#F35029] transition-all font-semibold text-sm hover:no-underline"
+          >
+            {locale === "zh"
+              ? "编辑主页"
+              : locale === "fr"
+              ? "Modifier la page"
+              : "Edit Homepage"}
+          </Link>
+        )}
       </div>
     </aside>
   );

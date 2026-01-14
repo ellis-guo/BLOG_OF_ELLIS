@@ -23,6 +23,7 @@ export default function EditArticlePage() {
   const [author, setAuthor] = useState("");
   const [coverImage, setCoverImage] = useState("");
   const [visibility, setVisibility] = useState("public");
+  const [tags, setTags] = useState("");
 
   const [titleZh, setTitleZh] = useState("");
   const [titleEn, setTitleEn] = useState("");
@@ -79,6 +80,7 @@ export default function EditArticlePage() {
           setAuthor(article.author);
           setCoverImage(article.coverImage || "");
           setVisibility(article.visibility);
+          setTags((article.tags || []).join(", "));
 
           setTitleZh(article.titleZh);
           setTitleEn(article.titleEn);
@@ -140,6 +142,7 @@ export default function EditArticlePage() {
           author,
           coverImage: coverImage || null,
           visibility,
+          tags: tags ? tags.split(",").map((t) => t.trim()) : [],
         }),
       });
 
@@ -272,6 +275,23 @@ export default function EditArticlePage() {
               placeholder="https://..."
             />
           </div>
+
+          {/* Tags */}
+          <div>
+            <label className="block text-sm font-semibold mb-2">
+              Tags (comma-separated)
+            </label>
+            <input
+              type="text"
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
+              className="w-full px-4 py-3 border-2 border-black focus:outline-none focus:border-[#F35029] transition-colors"
+              placeholder="React, TypeScript, Next.js"
+            />
+            <p className="text-sm text-gray-500 mt-1">
+              For projects: tech stack. For posts: categories.
+            </p>
+          </div>
         </div>
 
         {/* Titles Section */}
@@ -323,7 +343,7 @@ export default function EditArticlePage() {
           </div>
         </div>
 
-        {/* Descriptions Section - NEW */}
+        {/* Descriptions Section */}
         <div className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-[#ccc] pb-2">
             📄 Descriptions (Optional)

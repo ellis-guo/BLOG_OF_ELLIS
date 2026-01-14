@@ -125,7 +125,7 @@ export default async function AboutPage({
   return (
     <div>
       <Navbar locale={locale} translations={translations} />
-      <div className="max-w-[1024px] mx-auto">
+      <div className="max-w-[1024px] mx-auto pt-20">
         {/* Main content area - two column layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
           {/* Left side: Photo area */}

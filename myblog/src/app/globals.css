@@ -336,3 +336,30 @@ button:hover,
 .markdown-content input[type="checkbox"] {
   margin-right: 0.5em;
 }
+
+.scroll-progress {
+  position: fixed;
+  left: 48%;
+  top: 0;
+  width: 3px;
+  background: linear-gradient(
+    to bottom,
+    #f35029 0%,
+    #f35029 50%,
+    rgba(243, 80, 41, 0.3) 100%
+  );
+  transform-origin: top;
+  transition: transform 0.1s ease-out;
+  z-index: 10;
+}
+
+/* Hide scrollbar but keep functionality */
+html {
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}

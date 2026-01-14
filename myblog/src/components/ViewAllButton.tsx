@@ -20,8 +20,8 @@ export default function ViewAllButton({ href, text }: ViewAllButtonProps) {
                  hover:no-underline"
     >
       <span>{text}</span>
-      <span className="text-base transition-transform duration-200 group-hover:translate-x-1">
-        →
+      <span className="text-base transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1">
+        ↗
       </span>
     </Link>
   );
