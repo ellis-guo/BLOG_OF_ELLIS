@@ -3,12 +3,33 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { locales, defaultLocale, isValidLocale } from "@/i18n/i18n";
 
-export default clerkMiddleware((auth, req: NextRequest) => {
+const WRITE_METHODS = new Set(["POST", "PUT", "DELETE"]);
+
+export default clerkMiddleware(async (auth, req: NextRequest) => {
   const pathname = req.nextUrl.pathname;
 
-  // Skip locale handling for API routes
+  // Protect API write operations: must be signed in
   if (pathname.startsWith("/api/")) {
+    if (WRITE_METHODS.has(req.method)) {
+      const { userId } = await auth();
+      if (!userId) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+    }
     return NextResponse.next();
+  }
+
+  // Protect admin pages: must be signed in
+  const isAdminRoute = locales.some((locale) =>
+    pathname.startsWith(`/${locale}/admin`)
+  );
+  if (isAdminRoute) {
+    const { userId } = await auth();
+    if (!userId) {
+      const locale =
+        locales.find((l) => pathname.startsWith(`/${l}/`)) ?? defaultLocale;
+      return NextResponse.redirect(new URL(`/${locale}/sign-in`, req.url));
+    }
   }
 
   // Check if pathname is missing locale
@@ -18,15 +39,12 @@ export default clerkMiddleware((auth, req: NextRequest) => {
 
   // Redirect if there is no locale
   if (pathnameIsMissingLocale) {
-    // Try to get locale from browser preferences
     const locale = getLocaleFromRequest(req);
 
-    // Handle root path
     if (pathname === "/") {
       return NextResponse.redirect(new URL(`/${locale}`, req.url));
     }
 
-    // Add locale to other paths
     return NextResponse.redirect(new URL(`/${locale}${pathname}`, req.url));
   }
 
