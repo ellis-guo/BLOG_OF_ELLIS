@@ -5,7 +5,9 @@ import { isAdmin } from "@/lib/auth";
 // GET - Fetch homepage data
 export async function GET() {
   try {
-    const homepage = await prisma.homepage.findFirst();
+    const homepage = await prisma.homepage.findUnique({
+      where: { id: "singleton" },
+    });
 
     if (!homepage) {
       return NextResponse.json(
@@ -46,42 +48,23 @@ export async function PUT(request: NextRequest) {
       featuredPostIds,
     } = body;
 
-    // Find existing homepage
-    let homepage = await prisma.homepage.findFirst();
+    const data = {
+      sloganZh: sloganZh ?? "",
+      sloganEn: sloganEn ?? "",
+      sloganFr: sloganFr ?? "",
+      aboutZh: aboutZh ?? "",
+      aboutEn: aboutEn ?? "",
+      aboutFr: aboutFr ?? "",
+      featuredExperienceIds: featuredExperienceIds ?? [],
+      featuredProjectIds: featuredProjectIds ?? [],
+      featuredPostIds: featuredPostIds ?? [],
+    };
 
-    if (!homepage) {
-      // Create new homepage if doesn't exist
-      homepage = await prisma.homepage.create({
-        data: {
-          sloganZh: sloganZh || "",
-          sloganEn: sloganEn || "",
-          sloganFr: sloganFr || "",
-          aboutZh: aboutZh || "",
-          aboutEn: aboutEn || "",
-          aboutFr: aboutFr || "",
-          featuredExperienceIds: featuredExperienceIds || [],
-          featuredProjectIds: featuredProjectIds || [],
-          featuredPostIds: featuredPostIds || [],
-        },
-      });
-    } else {
-      // Update existing homepage
-      homepage = await prisma.homepage.update({
-        where: { id: homepage.id },
-        data: {
-          sloganZh: sloganZh ?? homepage.sloganZh,
-          sloganEn: sloganEn ?? homepage.sloganEn,
-          sloganFr: sloganFr ?? homepage.sloganFr,
-          aboutZh: aboutZh ?? homepage.aboutZh,
-          aboutEn: aboutEn ?? homepage.aboutEn,
-          aboutFr: aboutFr ?? homepage.aboutFr,
-          featuredExperienceIds:
-            featuredExperienceIds ?? homepage.featuredExperienceIds,
-          featuredProjectIds: featuredProjectIds ?? homepage.featuredProjectIds,
-          featuredPostIds: featuredPostIds ?? homepage.featuredPostIds,
-        },
-      });
-    }
+    const homepage = await prisma.homepage.upsert({
+      where: { id: "singleton" },
+      update: data,
+      create: { id: "singleton", ...data },
+    });
 
     return NextResponse.json({
       success: true,

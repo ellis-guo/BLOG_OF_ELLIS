@@ -5,7 +5,9 @@ import { isAdmin } from "@/lib/auth";
 // GET - Read profile data
 export async function GET() {
   try {
-    const profile = await prisma.profile.findFirst();
+    const profile = await prisma.profile.findUnique({
+      where: { id: "singleton" },
+    });
 
     if (!profile) {
       return NextResponse.json({ error: "Profile not found" }, { status: 404 });
@@ -43,41 +45,23 @@ export async function PUT(request: NextRequest) {
       photoUrl,
     } = body;
 
-    // Find existing profile
-    let profile = await prisma.profile.findFirst();
+    const data = {
+      bioZh: bioZh ?? "",
+      bioEn: bioEn ?? "",
+      bioFr: bioFr ?? "",
+      email: email ?? null,
+      github: github ?? null,
+      linkedin: linkedin ?? null,
+      twitter: twitter ?? null,
+      wechat: wechat ?? null,
+      photoUrl: photoUrl ?? null,
+    };
 
-    if (!profile) {
-      // Create new profile if doesn't exist
-      profile = await prisma.profile.create({
-        data: {
-          bioZh: bioZh || "",
-          bioEn: bioEn || "",
-          bioFr: bioFr || "",
-          email: email || null,
-          github: github || null,
-          linkedin: linkedin || null,
-          twitter: twitter || null,
-          wechat: wechat || null,
-          photoUrl: photoUrl || null,
-        },
-      });
-    } else {
-      // Update existing profile
-      profile = await prisma.profile.update({
-        where: { id: profile.id },
-        data: {
-          bioZh: bioZh || "",
-          bioEn: bioEn || "",
-          bioFr: bioFr || "",
-          email: email || null,
-          github: github || null,
-          linkedin: linkedin || null,
-          twitter: twitter || null,
-          wechat: wechat || null,
-          photoUrl: photoUrl || null,
-        },
-      });
-    }
+    const profile = await prisma.profile.upsert({
+      where: { id: "singleton" },
+      update: data,
+      create: { id: "singleton", ...data },
+    });
 
     return NextResponse.json({
       success: true,
