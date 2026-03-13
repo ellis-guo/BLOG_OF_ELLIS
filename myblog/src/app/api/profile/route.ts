@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
+import { isAdmin } from "@/lib/auth";
 
 // GET - Read profile data
 export async function GET() {
@@ -25,8 +25,7 @@ export async function GET() {
 export async function PUT(request: NextRequest) {
   try {
     // Check if user is admin
-    const user = await currentUser();
-    if (user?.username !== "admin") {
+    if (!(await isAdmin())) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
